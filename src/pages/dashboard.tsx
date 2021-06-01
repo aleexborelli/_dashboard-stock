@@ -1,7 +1,9 @@
 import { Flex, SimpleGrid, Box, Text, theme } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
-import { Header } from '../components/Header/Header';
-import { Sidebar } from '../components/Sidebar/Sidebar';
+import { useContext } from 'react';
+import { Header } from '../components/Header';
+import { Sidebar } from '../components/Sidebar';
+import { AuthContext } from '../context/AuthContext';
 
 const Chart = dynamic(() => import ('react-apexcharts'), {
   ssr: false,
@@ -43,6 +45,15 @@ const options = {
       '2021-03-23T00:00:00.000Z',
       '2021-03-24T00:00:00.000Z',
     ]
+  },
+  fill: {
+    opacity: 0.3,
+    type: 'gradient',
+    gradient: {
+      shade: 'dark',
+      opacityFrom: 0.7,
+      opacityTo: 0.3
+    }
   }
 }
 
@@ -55,7 +66,7 @@ export default function Dashboard() {
     <Flex direction="column" h="100vh">
       <Header />
 
-      <Flex width="100%" my="6" maxW={1480} px="6" >
+      <Flex width="100%" my="6" maxWidth={1480} px="6" >
         <Sidebar />
 
         <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start" >
