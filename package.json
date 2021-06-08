@@ -17,12 +17,15 @@
     "axios": "^0.21.1",
     "framer-motion": "^4.1.17",
     "next": "10.2.3",
+    "next-react-svg": "^1.1.2",
     "nookies": "^2.5.2",
     "react": "17.0.2",
     "react-apexcharts": "^1.3.9",
     "react-dom": "17.0.2",
+    "react-dropzone": "^11.3.2",
     "react-hook-form": "^7.7.1",
     "react-icons": "^4.2.0",
+    "react-modal": "^3.14.2",
     "yup": "^0.32.9"
   },
   "devDependencies": {
@@ -30,6 +33,8 @@
     "@types/cookie": "^0.4.0",
     "@types/node": "^15.6.1",
     "@types/react": "^17.0.7",
+    "@types/react-dropzone": "^5.1.0",
+    "@types/react-modal": "^3.12.0",
     "typescript": "^4.2.4"
   }
 }

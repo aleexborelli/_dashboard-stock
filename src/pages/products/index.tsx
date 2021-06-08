@@ -15,11 +15,41 @@ import {
   Avatar,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { RiAddLine, RiEditLine, RiPencilLine } from 'react-icons/ri';
+import { useEffect, useState } from 'react';
+import {
+  RiAddLine,
+  RiPencilLine,
+} from 'react-icons/ri';
 import { Header } from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
-export default function UserList() {
+import api from '../../services/api';
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  amount: number;
+  image: string;
+}
+
+interface ProductsProps {
+  onOpenNewProductModal: () => void;
+}
+
+export default function ProductList({ onOpenNewProductModal }: ProductsProps) {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  async function getProducts() {
+    await api.get('products').then((response) => {
+      setProducts(response.data);
+    });
+  }
   return (
     <Box>
       <Header />
@@ -32,14 +62,15 @@ export default function UserList() {
             <Heading size='lg' fontWeight='normal'>
               Produtos
             </Heading>
-
-            <Link href="/products/create">
+            
+            <Link href='/products/create'>
               <Button
                 as='a'
                 size='sm'
                 fontSize='sm'
                 colorScheme='blue'
-                leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                leftIcon={<Icon as={RiAddLine} fontSize='20' />}
+                onClick={onOpenNewProductModal}
               >
                 Criar novo produto
               </Button>
@@ -53,7 +84,9 @@ export default function UserList() {
                   <Checkbox colorScheme='blue' />
                 </Th>
 
-                <Th width='8' textAlign="center">Imagem</Th>
+                <Th width='8' textAlign='center'>
+                  Imagem
+                </Th>
                 <Th>Produto</Th>
                 <Th>Em Estoque</Th>
                 <Th>R$</Th>
@@ -61,110 +94,40 @@ export default function UserList() {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td px='6'>
-                  <Checkbox colorScheme='blue' />
-                </Td>
-                <Td>
-                  <Avatar
-                    size='lg'
-                    name='Anel de ouro'
-                    src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_B20pxTpzcyOL3IcL33ObsjWA4RJZ-IMTlw&usqp=CAU'
-                  />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight='bold'>Anel de ouro</Text>
-                    <Text fontSize='sm' color='gray.300'>
-                      Referencia: 6712
-                    </Text>
-                  </Box>
-                </Td>
-                <Td>100</Td>
+              {products.map((product) => (
+                <Tr key={product.id}>
+                  <Td px='6'>
+                    <Checkbox colorScheme='blue' />
+                  </Td>
+                  <Td>
+                    <Avatar size='lg' name={product.name} src={product.image} />
+                  </Td>
+                  <Td>
+                    <Box>
+                      <Text fontWeight='bold'> {product.name} </Text>
+                      <Text fontSize='sm' color='gray.300'>
+                        Referencia: {product.id}
+                      </Text>
+                    </Box>
+                  </Td>
+                  <Td>{product.amount}</Td>
 
-                <Td>R$ 299,90</Td>
-                <Td>
-                  <Button
-                    as='a'
-                    size='sm'
-                    fontSize='sm'
-                    colorScheme='blue'
-                    leftIcon={<Icon as={RiPencilLine}  fontSize="16" />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td px='6'>
-                  <Checkbox colorScheme='blue' />
-                </Td>
-                <Td>
-                  <Avatar
-                    size='lg'
-                    name='Anel de ouro'
-                    src='https://img2.gratispng.com/20180404/yhe/kisspng-jewellery-wedding-ring-silver-clothing-accessories-lily-of-the-valley-5ac50f7c3eaaa9.2738367015228639962567.jpg'
-                  />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight='bold'>Anel de prata</Text>
-                    <Text fontSize='sm' color='gray.300'>
-                      Referencia: 1213
-                    </Text>
-                  </Box>
-                </Td>
-                <Td>80</Td>
-
-                <Td>R$ 199,90</Td>
-                <Td>
-                  <Button
-                    as='a'
-                    size='sm'
-                    fontSize='sm'
-                    colorScheme='blue'
-                    leftIcon={<Icon as={RiPencilLine}  fontSize="16" />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td px='6'>
-                  <Checkbox colorScheme='blue' />
-                </Td>
-                <Td>
-                  <Avatar
-                    size='lg'
-                    name='Anel de ouro'
-                    src='https://opiniaobomvaleapena.com.br/imagens/colar-semijoia-coracao-zirconias-toque-de-joia.png'
-                  />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight='bold'>Colar de ouro</Text>
-                    <Text fontSize='sm' color='gray.300'>
-                      Referencia: 5749
-                    </Text>
-                  </Box>
-                </Td>
-                <Td>10</Td>
-
-                <Td>R$ 499,90</Td>
-                <Td>
-                  <Button
-                    as='a'
-                    size='sm'
-                    fontSize='sm'
-                    colorScheme='blue'
-                    leftIcon={<Icon as={RiPencilLine}  fontSize="16" />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
-              </Tr>
+                  <Td>R$ {product.price}</Td>
+                  <Td>
+                    <Button
+                      as='a'
+                      size='sm'
+                      fontSize='sm'
+                      colorScheme='blue'
+                      leftIcon={<Icon as={RiPencilLine} fontSize='16' />}
+                    >
+                      <Link href={`/products/${product.id}`} >
+                        Editar
+                      </Link>
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
 

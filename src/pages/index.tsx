@@ -26,16 +26,31 @@ export default function SignIn() {
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (data, event) => {
     event.preventDefault();
-    await signIn(data);
+    try {
+      await signIn(data);
 
-    toast({
-      position: 'top-right',
-      render: () => (
-        <Box color='white' p={3} bg='blue.500'>
-          Login success
-        </Box>
-      ),
-    });
+      toast({
+        position: 'top-right',
+        render: () => (
+          <Box color='white' p={3} bg='blue.500'>
+            Login success
+          </Box>
+        ),
+        duration: 2000,
+      });
+    }
+    catch (err){
+      toast({
+        position: 'top-right',
+        render: () => (
+          <Box color='white' p={3} bg='red.500'>
+            Falha ao autenticar usuário!
+          </Box>
+        ),
+        duration: 2000,
+      });
+    }
+    
   };
 
   return (

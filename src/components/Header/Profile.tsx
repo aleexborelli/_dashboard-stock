@@ -8,9 +8,9 @@ export function Profile() {
   return (
     <Flex align='center'>
       <Box mr='4' textAlign='right'>
-        <Text>{ user.name }</Text>
+        <Text>{ user ? user.name : 'Teste' }</Text>
         <Text color='gray.300' fontSize='small'>
-          { user.email }
+          { user ? user.email : 'Teste' }
         </Text>
       </Box>
 
@@ -18,6 +18,7 @@ export function Profile() {
         size='md'
         name='Alex Borelli'
         src='https://github.com/aleexborelli.png'
+        bg="gray.300"
       />
     </Flex>
   );

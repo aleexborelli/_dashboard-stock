@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const { '@Ecommerce:Token':token } = parseCookies()
 
-    if(token){
+    if(token && isAuthenticated){
       api.get(`/users/${user.id}`).then(response => {
         setUser(response.data)
       })
